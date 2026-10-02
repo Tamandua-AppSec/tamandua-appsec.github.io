@@ -10,14 +10,13 @@
   --violet: #7342d3;
   --rule: color-mix(in oklab, var(--ink) 16%, transparent);
   --tongue: #e879a8;
-  /* Paper, in three layers over the paper colour (see .paper below): the tooth, raised fibres lit from the top left;
-     slow clouds of lighter and darker pulp; and a few specks. The first two are blended in soft-light, so they shade
-     whatever colour is under them, by day or by night. */
-  --paper-tooth: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='t' x='0' y='0' width='100%' height='100%' color-interpolation-filters='sRGB'><feTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' seed='3' stitchTiles='stitch'/><feDiffuseLighting lighting-color='white' surfaceScale='1.4'><feDistantLight azimuth='45' elevation='60'/></feDiffuseLighting><feComponentTransfer><feFuncR type='linear' slope='2.2' intercept='-1.405'/><feFuncG type='linear' slope='2.2' intercept='-1.405'/><feFuncB type='linear' slope='2.2' intercept='-1.405'/></feComponentTransfer></filter><rect width='100%' height='100%' filter='url(%23t)'/></svg>");
-  /* The page's own tooth; at night the page is a dark desk, where the same relief reads far stronger, so it's fainter. */
+  /* Paper: the tooth (raised fibres lit from the top left) and slow clouds of pulp with a few specks, baked once into
+     small tiles (src/assets/paper) that only need tiling: no filters or blending at paint time. At night the page is
+     a dark desk and gets its own, fainter pair; the cards are lit paper in both themes. */
+  --paper-tooth: url('../assets/paper/paper-tooth.webp');
+  --paper-cloud: url('../assets/paper/paper-cloud.webp');
   --page-tooth: var(--paper-tooth);
-  --paper-cloud: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='640' height='640'><filter id='c' x='0' y='0' width='100%' height='100%' color-interpolation-filters='sRGB'><feTurbulence type='fractalNoise' baseFrequency='.006' numOctaves='3' seed='9' stitchTiles='stitch'/><feColorMatrix values='1 0 0 0 0  1 0 0 0 0  1 0 0 0 0  0 0 0 0 1'/><feComponentTransfer><feFuncR type='linear' slope='.55' intercept='.225'/><feFuncG type='linear' slope='.55' intercept='.225'/><feFuncB type='linear' slope='.55' intercept='.225'/></feComponentTransfer></filter><rect width='100%' height='100%' filter='url(%23c)'/></svg>");
-  --paper-specks: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='420' height='420'><filter id='s' x='0' y='0' width='100%' height='100%'><feTurbulence type='fractalNoise' baseFrequency='.55' numOctaves='1' seed='7' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .35  0 0 0 0 .26  0 0 0 0 .18  14 0 0 0 -10.2'/></filter><rect width='100%' height='100%' filter='url(%23s)' opacity='.55'/></svg>");
+  --page-cloud: var(--paper-cloud);
   /* Cards are paper in both themes. */
   --card: #fff3de;
   --card-deep: #f6e7c8;
@@ -41,24 +40,18 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
     --paper: #1e1433; --paper-deep: #271b42; --ink: #fff3de; --muted: #c4b8da; --violet: #bba5ff; --tongue: #f39ac2;
-    --card: #f4e6cc; --card-deep: #ead9b8; --slab: #2b1e4a; color-scheme: dark;
-    --page-tooth: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='t' x='0' y='0' width='100%' height='100%' color-interpolation-filters='sRGB'><feTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' seed='3' stitchTiles='stitch'/><feDiffuseLighting lighting-color='white' surfaceScale='1.4'><feDistantLight azimuth='45' elevation='60'/></feDiffuseLighting><feComponentTransfer><feFuncR type='linear' slope='1.1' intercept='-.453'/><feFuncG type='linear' slope='1.1' intercept='-.453'/><feFuncB type='linear' slope='1.1' intercept='-.453'/></feComponentTransfer></filter><rect width='100%' height='100%' filter='url(%23t)'/></svg>");
+    --card: #f4e6cc; --card-deep: #ead9b8; --slab: #2b1e4a; color-scheme: dark; --page-tooth: url('../assets/paper/desk-tooth.webp'); --page-cloud: url('../assets/paper/desk-cloud.webp');
   }
 }
 :root[data-theme="dark"] {
   --paper: #1e1433; --paper-deep: #271b42; --ink: #fff3de; --muted: #c4b8da; --violet: #bba5ff; --tongue: #f39ac2;
-  --card: #f4e6cc; --card-deep: #ead9b8; --slab: #2b1e4a; color-scheme: dark;
-    --page-tooth: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='300' height='300'><filter id='t' x='0' y='0' width='100%' height='100%' color-interpolation-filters='sRGB'><feTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' seed='3' stitchTiles='stitch'/><feDiffuseLighting lighting-color='white' surfaceScale='1.4'><feDistantLight azimuth='45' elevation='60'/></feDiffuseLighting><feComponentTransfer><feFuncR type='linear' slope='1.1' intercept='-.453'/><feFuncG type='linear' slope='1.1' intercept='-.453'/><feFuncB type='linear' slope='1.1' intercept='-.453'/></feComponentTransfer></filter><rect width='100%' height='100%' filter='url(%23t)'/></svg>");
+  --card: #f4e6cc; --card-deep: #ead9b8; --slab: #2b1e4a; color-scheme: dark; --page-tooth: url('../assets/paper/desk-tooth.webp'); --page-cloud: url('../assets/paper/desk-cloud.webp');
 }
 
 *, *::before, *::after { box-sizing: border-box; }
 /* Anything made of paper: the page, the cards, the plates held still and the leaf that covers a plate. */
-body, .plate[data-held], .leaf-cover, .card-paper {
-  background-image: var(--paper-specks), var(--page-tooth), var(--paper-cloud);
-  background-blend-mode: normal, soft-light, soft-light;
-}
-/* Cards are lit paper in both themes. */
-.card-paper { background-image: var(--paper-specks), var(--paper-tooth), var(--paper-cloud); }
+body, .plate[data-held], .leaf-cover { background-image: var(--page-tooth), var(--page-cloud); background-size: 300px, 640px; }
+.card-paper { background-image: var(--paper-tooth), var(--paper-cloud); background-size: 300px, 640px; }
 html { -webkit-text-size-adjust: 100%; scroll-padding-top: 5rem; }
 body {
   margin: 0;
@@ -141,7 +134,8 @@ html.motion [data-reveal] { will-change: transform, opacity; }
    without it. */
 .leaf { position: absolute; inset: 0; z-index: 3; pointer-events: none; overflow: hidden; }
 .leaf-cover { position: absolute; inset: 0; background-color: var(--paper); }
-.leaf-fold { position: absolute; inset: 0; filter: drop-shadow(-6px 8px 10px rgb(30 20 51 / 0.22)); }
+/* The flap's shadow is its own shape, offset: a filter would be recomputed over the whole plate on every frame. */
+.leaf-shade { position: absolute; inset: 0; background: rgb(30 20 51 / 0.12); }
 .leaf-flap {
   position: absolute; inset: 0;
   background: linear-gradient(45deg, var(--paper-deep), color-mix(in oklab, var(--paper) 70%, var(--paper-deep)) 55%, var(--paper-deep));

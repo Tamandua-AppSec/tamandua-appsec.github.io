@@ -23,6 +23,10 @@ let teardown: (() => void) | null = null
 const tally = { page: 0, specimens: 0 }
 
 export function start() {
+  // Changing language turns the page: the next one comes in complete (see the inline script in Base.astro).
+  document.querySelectorAll('[data-turn]').forEach(link => link.addEventListener('click', () => {
+    try { sessionStorage.setItem('tamandua-turn', '1') } catch { /* then it just plays its entrance */ }
+  }))
   wireCopyButtons()
   wireMotionToggle()
   wireThemeToggle()
@@ -414,10 +418,11 @@ function pages(gsap: Gsap) {
     const leaf = document.createElement('div')
     leaf.className = 'leaf'
     leaf.setAttribute('aria-hidden', 'true')
-    leaf.innerHTML = '<div class="leaf-cover"></div><div class="leaf-fold"><div class="leaf-flap"></div></div>'
+    leaf.innerHTML = '<div class="leaf-cover"></div><div class="leaf-shade"></div><div class="leaf-flap"></div>'
     plate.appendChild(leaf)
     const cover = leaf.querySelector<HTMLElement>('.leaf-cover')!
     const flap = leaf.querySelector<HTMLElement>('.leaf-flap')!
+    const shade = leaf.querySelector<HTMLElement>('.leaf-shade')!
     const draw = (progress: number) => {
       const width = plate.offsetWidth, height = plate.offsetHeight
       // The fold is the line x − y = d; it travels from the top right corner (d = width) past the bottom left (d = −height).
@@ -428,6 +433,7 @@ function pages(gsap: Gsap) {
       const back = lifted.map(point => ({ x: point.y + d, y: point.x - d }))  // mirrored across the fold
       cover.style.clipPath = polygon(kept)
       flap.style.clipPath = polygon(back)
+      shade.style.clipPath = polygon(back.map(point => ({ x: point.x - 7, y: point.y + 9 })))
       leaf.style.visibility = progress >= 1 ? 'hidden' : 'visible'
     }
     draw(0)

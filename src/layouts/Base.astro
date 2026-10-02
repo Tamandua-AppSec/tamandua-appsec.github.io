@@ -41,7 +41,11 @@ const spanish = new URL(withBase(path.startsWith('/es') ? path : `/es${path === 
       document.documentElement.classList.replace('no-js', 'js')
       try {
         if (localStorage.getItem('tamandua-motion') === 'off') document.documentElement.classList.add('still')
-        if (!document.documentElement.classList.contains('still') && matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+        // Arriving from the other language, the page turns (a view transition): it must already be complete, not blank
+        // waiting for its entrance, or the turn shows an empty page that then fills in.
+        const turned = sessionStorage.getItem('tamandua-turn') === '1'
+        sessionStorage.removeItem('tamandua-turn')
+        if (!turned && !document.documentElement.classList.contains('still') && matchMedia('(prefers-reduced-motion: no-preference)').matches) {
           document.documentElement.classList.add('pending')
           setTimeout(() => document.documentElement.classList.remove('pending'), 1500)  // the script never came: show everything
         }
@@ -82,7 +86,7 @@ const spanish = new URL(withBase(path.startsWith('/es') ? path : `/es${path === 
             </svg>
             <span class="motion-label" data-motion-label>{t.motion.pause}</span>
           </button>
-          <a class="lang mono" href={withBase(t.nav.otherHref)} hreflang={t.lang === 'es' ? 'en' : 'es'}>{t.nav.other}</a>
+          <a class="lang mono" href={withBase(t.nav.otherHref)} data-turn hreflang={t.lang === 'es' ? 'en' : 'es'}>{t.nav.other}</a>
           <a class="code mono" href={REPO}>{t.nav.code} ↗</a>
         </div>
       </div>
@@ -98,8 +102,9 @@ const spanish = new URL(withBase(path.startsWith('/es') ? path : `/es${path === 
 <style>
   .top {
     position: sticky; top: 0; z-index: 40;
-    background: color-mix(in oklab, var(--paper) 90%, transparent);
-    backdrop-filter: blur(6px); border-bottom: 1px solid var(--rule);
+    /* Solid paper, not a blur of what scrolls under it: blurring the page on every scrolled frame is costly. */
+    background-color: var(--paper); background-image: var(--page-tooth), var(--page-cloud); background-size: 300px, 640px;
+    border-bottom: 1px solid var(--rule);
   }
   .top-row { display: flex; align-items: center; gap: 1.5rem; min-height: 4rem; }
   .brand { display: inline-flex; align-items: center; gap: 0.6rem; font-weight: 600; text-decoration: none; letter-spacing: -0.01em; }
