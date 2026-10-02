@@ -49,6 +49,9 @@ async function run() {
     import('lenis').then(module => module.default),
   ])
   gsap.registerPlugin(ScrollTrigger, SplitText, DrawSVGPlugin)
+  // On phones the address bar shows and hides as you scroll, changing the viewport's height: recomputing the held
+  // plates then would make the page jump under the finger.
+  ScrollTrigger.config({ ignoreMobileResize: true })
   const lenis = new Lenis({ anchors: true, lerp: 0.12 })
   const onTick = (time: number) => lenis.raf(time * 1000)
   lenis.on('scroll', ScrollTrigger.update)
@@ -98,7 +101,8 @@ async function run() {
     gsap.ticker.remove(onTick)
     lenis.destroy()
   }
-  void document.fonts.ready.then(() => ScrollTrigger.refresh())
+  // Only if the fonts weren't there yet: a refresh once the reader is scrolling moves the held plates under them.
+  if (document.fonts.status !== 'loaded') void document.fonts.ready.then(() => ScrollTrigger.refresh())
 }
 
 // --- 1. the ink sketch ------------------------------------------------------------------------------------------------
@@ -366,7 +370,7 @@ function card(gsap: Gsap) {
 // Holds a plate still for `distance` pixels of scrolling: its bottom at the bottom of the screen, or centred if it fits.
 function held(plate: HTMLElement, distance: () => number) {
   return { trigger: plate, start: () => (plate.offsetHeight > innerHeight ? 'bottom bottom' : 'center center'),
-           end: () => `+=${distance()}`, pin: true, scrub: 0.5, anticipatePin: 1, invalidateOnRefresh: true }
+           end: () => `+=${distance()}`, pin: true, scrub: 0.5, invalidateOnRefresh: true }
 }
 
 function numerals(gsap: Gsap) {
