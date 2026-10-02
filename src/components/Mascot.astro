@@ -1,26 +1,63 @@
 ---
-// The tamandua of the logo, without its square: the same shapes, drawn large. Outlines (data-ink, pathLength 1) are
-// sketched first like a naturalist's ink drawing, then the flat colour (data-wash) comes in. The snout's tip carries
-// data-tongue="start": the tongue is drawn from there. The pupil (data-pupil) follows the pointer.
+// The tamandua of the logo, without its square, drawn like a naturalist's plate: a pencil underdrawing (construction
+// lines and a first pass of the outlines, data-pencil), the flat colour (data-wash), pen hatching in the shadows and
+// brush streaks in the vest (data-wash too), and the ink outlines on top (data-ink, pathLength 1), sketched first by
+// scripts/motion.ts. The snout's tip carries data-tongue="start": the tongue is drawn from there. The pupil
+// (data-pupil) follows the pointer. All of it is plain SVG: no filters, nothing recomputed while it breathes.
 interface Props { class?: string; label: string }
 const { class: className = '', label } = Astro.props
 const ink: astroHTML.JSX.SVGAttributes & { 'data-ink': string } = {
   fill: 'none', stroke: '#1E1433', 'stroke-width': 0.5, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', pathLength: 1, 'data-ink': '',
 }
+const pencil: astroHTML.JSX.SVGAttributes & { 'data-pencil': string } = {
+  fill: 'none', stroke: '#8A8396', 'stroke-width': 0.2, 'stroke-linecap': 'round', opacity: 0.55, 'data-pencil': '',
+}
+const head = 'M13 31 C13 23.5 19 19.5 25.5 20 C31 20.4 34.5 23 38 25.5 C44 29.5 50 33.5 54.3 36.4 C55.6 37.3 55.1 39.3 53.5 39.3 C47 39.4 40.5 39.8 35 40.8 C30 41.8 24 43 19 41.5 C15 40.3 13 36 13 31 Z'
+const body = 'M2 64 C3 48 13 39 25 38 C35 37.5 41 44 43 64 Z'
+const vest = 'M2 64 C3 50 10 42 19 40 C24 44 27 52 27 64 Z'
 ---
 <svg class={`mascot ${className}`} viewBox="8 15 52 49" role="img" aria-label={label} data-mascot>
+  <defs>
+    <pattern id="mascot-hatch" width="1.1" height="1.1" patternUnits="userSpaceOnUse" patternTransform="rotate(-38)">
+      <line x1="0" y1="0" x2="0" y2="1.1" stroke="#1E1433" stroke-width=".16" />
+    </pattern>
+    <pattern id="mascot-brush" width="1.5" height="1.5" patternUnits="userSpaceOnUse" patternTransform="rotate(64)">
+      <line x1="0" y1="0" x2="0" y2="1.5" stroke="#FFF3DE" stroke-width=".11" />
+    </pattern>
+    <radialGradient id="mascot-fade"><stop offset=".15" stop-color="#fff" /><stop offset="1" stop-color="#000" /></radialGradient>
+    <linearGradient id="mascot-down" x1="0" y1="0" x2="0" y2="1"><stop offset=".2" stop-color="#000" /><stop offset="1" stop-color="#fff" /></linearGradient>
+    <clipPath id="mascot-head-shape"><path d={head} /></clipPath>
+    <clipPath id="mascot-body-shape"><path d={body} /></clipPath>
+    <mask id="mascot-neck"><ellipse cx="31" cy="42" rx="11" ry="5" fill="url(#mascot-fade)" /></mask>
+    <mask id="mascot-jaw"><rect x="12" y="35.5" width="44" height="7" fill="url(#mascot-down)" /></mask>
+    <mask id="mascot-nape"><ellipse cx="15" cy="34" rx="4.5" ry="7" fill="url(#mascot-fade)" /></mask>
+  </defs>
   <g class="mascot-body">
-    <path d="M2 64 C3 48 13 39 25 38 C35 37.5 41 44 43 64 Z" fill="#FFF3DE" data-wash />
-    <path d="M2 64 C3 50 10 42 19 40 C24 44 27 52 27 64 Z" fill="#1E1433" data-wash />
+    <path d="M2.5 64 C3.6 48.5 13.5 39.4 25.4 38.5 C35.5 38.1 41.3 44.6 43.5 64" {...pencil} />
+    <path d={body} fill="#FFF3DE" data-wash />
+    <path d={vest} fill="#1E1433" data-wash />
+    <!-- Brush streaks in the vest, and the shadow the head casts on the chest. -->
+    <path d={vest} fill="url(#mascot-brush)" opacity=".22" data-wash />
+    <rect x="18" y="37" width="26" height="12" fill="url(#mascot-hatch)" clip-path="url(#mascot-body-shape)" mask="url(#mascot-neck)" opacity=".55" data-wash />
     <path d="M2 64 C3 48 13 39 25 38 C35 37.5 41 44 43 64" {...ink} />
     <path d="M19 40 C24 44 27 52 27 64" {...ink} />
   </g>
   <g class="mascot-head">
+    <!-- Construction: a circle for the skull and the axis of the snout, then a loose first pass of the outline. -->
+    <circle cx="24.5" cy="31" r="10.8" {...pencil} stroke-dasharray=".9 .7" />
+    <path d="M21 33.2 L56.5 38.4" {...pencil} />
+    <path d={head} {...pencil} transform="translate(.5 -.4) rotate(.7 30 31)" />
     <ellipse cx="17.5" cy="21" rx="4.2" ry="5" transform="rotate(-18 17.5 21)" fill="#FFF3DE" data-wash />
     <ellipse cx="17.8" cy="21.6" rx="2" ry="2.8" transform="rotate(-18 17.8 21.6)" fill="#F2C9A0" data-wash />
+    <ellipse cx="17.8" cy="21.6" rx="2" ry="2.8" transform="rotate(-18 17.8 21.6)" fill="url(#mascot-hatch)" opacity=".35" data-wash />
     <ellipse cx="17.5" cy="21" rx="4.2" ry="5" transform="rotate(-18 17.5 21)" {...ink} />
-    <path d="M13 31 C13 23.5 19 19.5 25.5 20 C31 20.4 34.5 23 38 25.5 C44 29.5 50 33.5 54.3 36.4 C55.6 37.3 55.1 39.3 53.5 39.3 C47 39.4 40.5 39.8 35 40.8 C30 41.8 24 43 19 41.5 C15 40.3 13 36 13 31 Z" fill="#FFF3DE" data-wash />
-    <path d="M13 31 C13 23.5 19 19.5 25.5 20 C31 20.4 34.5 23 38 25.5 C44 29.5 50 33.5 54.3 36.4 C55.6 37.3 55.1 39.3 53.5 39.3 C47 39.4 40.5 39.8 35 40.8 C30 41.8 24 43 19 41.5 C15 40.3 13 36 13 31 Z" {...ink} />
+    <path d={head} fill="#FFF3DE" data-wash />
+    <!-- Pen hatching under the jaw and at the nape. -->
+    <g clip-path="url(#mascot-head-shape)" opacity=".5" data-wash>
+      <rect x="12" y="35.5" width="44" height="7" fill="url(#mascot-hatch)" mask="url(#mascot-jaw)" />
+      <rect x="10" y="27" width="10" height="14" fill="url(#mascot-hatch)" mask="url(#mascot-nape)" />
+    </g>
+    <path d={head} {...ink} />
     <circle cx="53.8" cy="37.9" r="1.7" fill="#1E1433" data-wash data-tongue="start" />
     <g class="mascot-eye" data-eye>
       <circle cx="27.5" cy="28.5" r="2.4" fill="#1E1433" data-wash />
@@ -34,6 +71,6 @@ const ink: astroHTML.JSX.SVGAttributes & { 'data-ink': string } = {
 
 <style>
   .mascot { width: 100%; height: auto; overflow: visible; }
-  /* Until the script draws it (or gives up), the sketch starts blank: no flash of the finished drawing. */
+  /* Until the script draws it (or gives up), the drawing stays hidden: no flash of the finished plate. */
   :global(html.pending) .mascot { visibility: hidden; }
 </style>

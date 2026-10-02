@@ -128,13 +128,15 @@ function ink(gsap: Gsap, late: boolean) {
   const mascot = document.querySelector('[data-mascot]')
   if (!mascot) return
   if (!late) {
+    // Pencil first, then the ink over it, then colour and shading, each to its own opacity.
+    const pencil = mascot.querySelectorAll('[data-pencil]')
     const strokes = mascot.querySelectorAll('[data-ink]')
     const washes = mascot.querySelectorAll('[data-wash]')
     gsap.set(strokes, { drawSVG: '0%' })
-    gsap.set(washes, { opacity: 0 })
     gsap.timeline({ delay: 0.2 })
-      .to(strokes, { drawSVG: '100%', duration: 1.5, stagger: 0.14, ease: 'sine.inOut' })
-      .to(washes, { opacity: 1, duration: 0.9, stagger: 0.05, ease: 'sine.out' }, '-=0.5')
+      .from(pencil, { opacity: 0, duration: 0.6, stagger: 0.08, ease: 'sine.out' })
+      .to(strokes, { drawSVG: '100%', duration: 1.5, stagger: 0.14, ease: 'sine.inOut' }, '-=0.3')
+      .from(washes, { opacity: 0, duration: 0.9, stagger: 0.05, ease: 'sine.out' }, '-=0.5')
     // The lines of the title rise into place.
     // y: 0 as well: while the page loaded, CSS held them down, and GSAP would otherwise keep that offset in pixels.
     gsap.fromTo('.hero .line-inner', { y: 0, yPercent: 130 }, { y: 0, yPercent: 0, duration: 1.2, stagger: 0.1, ease: 'expo.out' })
