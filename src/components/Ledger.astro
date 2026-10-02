@@ -58,7 +58,7 @@ const l = t.ledger
   .status-0 { color: #2f6b45; } .status-1 { color: var(--card-ink); } .status-2 { color: var(--card-muted); }
   .fixed-row td:first-child { text-decoration: line-through; text-decoration-color: var(--violet); text-decoration-thickness: 2px; }
   .hanko { position: absolute; right: clamp(1rem, 3vw, 2.5rem); top: 3.6rem; display: grid; justify-items: center; gap: 0.4rem; }
-  .hanko-stamp { font-size: clamp(1.1rem, 0.9rem + 1vw, 1.6rem); padding: 0.6rem 1.1rem; background: color-mix(in oklab, var(--card) 80%, transparent); }
+  .hanko-stamp { font-size: clamp(1.1rem, 0.9rem + 1vw, 1.6rem); padding: 0.75rem 1.25rem; --ink-at: 140px 70px; }
   .hanko-note { font-size: 0.7rem; color: var(--violet); transform: rotate(-8deg); }
   .points { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1.5rem, 4vw, 3.5rem); list-style: none; padding: 0;
             margin: clamp(3.5rem, 7vw, 6rem) 0 0; }

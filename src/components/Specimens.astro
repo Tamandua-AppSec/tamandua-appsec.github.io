@@ -33,7 +33,7 @@ const s = t.specimens
           <h3 class="display specimen-name">{item.name}</h3>
           <p class="mono specimen-where">{item.where}</p>
           <p class="specimen-note">{item.note}</p>
-          <span class="stamp specimen-stamp" data-caught aria-hidden="true">{s.captured}</span>
+          <span class="stamp specimen-stamp" data-caught aria-hidden="true" style={`--ink-at: ${index * 97}px ${index * 53}px`}>{s.captured}</span>
           {index === 2 && <Note text={t.notes.secret} arrow="down-left" place="top: -4.4rem; right: -1.5rem" tilt={-6} />}
         </li>
       ))}
