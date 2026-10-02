@@ -6,6 +6,10 @@ import type { Content } from '../i18n/content'
 import { REPO } from '../i18n/content'
 import Bug from '../components/Bug.astro'
 import { withBase } from '../paths'
+import paperTooth from '../assets/paper/paper-tooth.webp'
+import paperCloud from '../assets/paper/paper-cloud.webp'
+import deskTooth from '../assets/paper/desk-tooth.webp'
+import deskCloud from '../assets/paper/desk-cloud.webp'
 
 interface Props { t: Content; path?: string }
 const { t, path = '/' } = Astro.props
@@ -34,8 +38,15 @@ const spanish = new URL(withBase(path.startsWith('/es') ? path : `/es${path === 
     <meta property="og:url" content={canonical} />
     <Font cssVariable="--font-display" preload />
     <Font cssVariable="--font-body" preload />
-    <Font cssVariable="--font-mono" />
-    <Font cssVariable="--font-hand" />
+    <Font cssVariable="--font-mono" preload />
+    <Font cssVariable="--font-hand" preload />
+    <!-- Every font and the paper are asked for up front: a page (above all one reached by changing language, mid page
+         turn) must not paint first with a fallback font or flat paper and then swap them in, which reads as a flicker.
+         The cards are paper in both themes; the desk tiles only matter at night. -->
+    <link rel="preload" as="image" href={paperTooth.src} type="image/webp" />
+    <link rel="preload" as="image" href={paperCloud.src} type="image/webp" />
+    <link rel="preload" as="image" href={deskTooth.src} type="image/webp" media="(prefers-color-scheme: dark)" />
+    <link rel="preload" as="image" href={deskCloud.src} type="image/webp" media="(prefers-color-scheme: dark)" />
     <script is:inline>
       // Before paint: JS is here, and whether this visitor turned motion off (a convenience; it may be unavailable).
       document.documentElement.classList.replace('no-js', 'js')
