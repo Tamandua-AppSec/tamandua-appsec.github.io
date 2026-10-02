@@ -31,7 +31,8 @@ export function start() {
   else settle()
 }
 
-// The final state, without animation: specimens caught, the tongue drawn, nothing hidden.
+// The final state, without animation: specimens caught, the tongue drawn (on wide screens only: phones never get the
+// tongue across the page), nothing hidden.
 function settle() {
   root.classList.remove('pending')
   document.querySelectorAll<HTMLElement>('[data-type]').forEach(element => { element.textContent = element.dataset.command ?? element.textContent })
@@ -39,8 +40,18 @@ function settle() {
   caught.forEach(item => item.classList.add('is-caught'))
   Object.assign(tally, { page: 0, specimens: caught.length })
   paintCounter()
-  const built = buildTongue([])
+  clearTongue()
+  const built = matchMedia(WIDE).matches ? buildTongue([]) : null
   if (built) built.paths.forEach(path => { path.style.strokeDashoffset = '0' })
+}
+
+// No tongue on the page: before a phone's lighter motion, and whenever motion stops or restarts.
+function clearTongue() {
+  document.querySelectorAll<SVGPathElement>('[data-tongue-path], [data-tongue-twin]').forEach(path => {
+    path.removeAttribute('d')
+    path.style.removeProperty('stroke-dasharray')
+    path.style.removeProperty('stroke-dashoffset')
+  })
 }
 
 async function run() {
@@ -74,13 +85,14 @@ async function run() {
       Object.assign(tally, { page: 0, specimens: 0 })
       paintCounter()
       stamps(gsap, ScrollTrigger)
+      clearTongue()
       if (!matched.conditions?.wide) return snack(gsap, ScrollTrigger)
       const bugsOnPage = swarm(gsap, ScrollTrigger)
       tongue(gsap, ScrollTrigger, bugsOnPage)
       pages(gsap)
       return () => {
         bugsOnPage.cleanup()
-        document.querySelectorAll('[data-tongue-path], [data-tongue-twin]').forEach(path => path.removeAttribute('d'))
+        clearTongue()
         document.querySelectorAll('.leaf').forEach(element => element.remove())
       }
     })
@@ -98,6 +110,7 @@ async function run() {
     media.revert()
     context.revert()
     document.querySelectorAll('.critter, .lick, .leaf').forEach(element => element.remove())
+    clearTongue()
     gsap.ticker.remove(onTick)
     lenis.destroy()
   }
