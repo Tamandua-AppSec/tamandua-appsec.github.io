@@ -356,10 +356,11 @@ function card(gsap: Gsap) {
   if (!element || !stage) return
   // The plate stops: the front can be read, the card turns over, the back can be read, and the page goes on.
   const plate = stage.closest<HTMLElement>('.plate') ?? stage
-  gsap.timeline({ scrollTrigger: held(plate, () => innerHeight * 1.4) })
-    .fromTo(element, { rotateY: 0, rotateZ: -2 }, { rotateY: 0, rotateZ: 0, duration: 0.3 })
-    .to(element, { rotateY: 180, rotateZ: 1.5, duration: 0.4, ease: 'power2.inOut' })
-    .to({}, { duration: 0.3 })
+  // A short hold (about half a screen of scrolling): long enough to turn it, never so long the page seems to end here.
+  gsap.timeline({ scrollTrigger: held(plate, () => innerHeight * 0.55) })
+    .fromTo(element, { rotateY: 0, rotateZ: -2 }, { rotateY: 0, rotateZ: 0, duration: 0.15 })
+    .to(element, { rotateY: 180, rotateZ: 1.5, duration: 0.6, ease: 'power2.inOut' })
+    .to({}, { duration: 0.25 })
 }
 
 // Holds a plate still for `distance` pixels of scrolling: its bottom at the bottom of the screen, or centred if it fits.
