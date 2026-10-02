@@ -2,6 +2,7 @@
 import type { Content } from '../i18n/content'
 import Bug from './Bug.astro'
 import Note from './Note.astro'
+import { DOCS } from '../i18n/content'
 interface Props { t: Content }
 const { t } = Astro.props
 const y = t.yours
@@ -50,7 +51,7 @@ const f = t.footer
           <button type="button" class="copy mono" data-copy={i.action} data-copied={i.copied}>{i.copy}</button></div>
       </li>
     </ol>
-    <p class="install-foot" data-reveal><a class="button ghost" href="https://github.com/BrayansStivens/appsec-agent/tree/main/docs">{i.docs} ↗</a>
+    <p class="install-foot" data-reveal><a class="button ghost" href={DOCS}>{i.docs} ↗</a>
       <span class="muted small">{i.note}</span></p>
   </div>
 </section>

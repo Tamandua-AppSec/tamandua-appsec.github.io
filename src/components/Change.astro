@@ -4,7 +4,7 @@ import Note from './Note.astro'
 interface Props { t: Content }
 const { t } = Astro.props
 const c = t.change
-const workflow = `- uses: actions/checkout@v4\n  with: { fetch-depth: 0 }\n- uses: BrayansStivens/appsec-agent@v0.10.1`
+const workflow = `- uses: actions/checkout@v4\n  with: { fetch-depth: 0 }\n- uses: BrayansStivens/Tamandua-AppSec@v0.10.1`
 ---
 <section id="change" class="plate" aria-labelledby="change-title">
   <div class="wrap grid">

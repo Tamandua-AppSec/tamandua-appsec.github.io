@@ -1,6 +1,6 @@
 # Tamandua · landing
 
-The website of [Tamandua](https://github.com/BrayansStivens/appsec-agent), in English (`/`) and Spanish (`/es/`).
+The website of [Tamandua](https://github.com/BrayansStivens/Tamandua-AppSec), in English (`/`) and Spanish (`/es/`).
 
 A field notebook: bugs are catalogued like specimens, the tamandua's tongue winds out of its snout and down the page as
 you read, eating every bug it reaches, and a violet hanko stamps what has been verified. Flat colour, editorial grid,

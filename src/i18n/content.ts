@@ -3,7 +3,7 @@
 
 export type Locale = 'en' | 'es'
 
-export const REPO = 'https://github.com/BrayansStivens/appsec-agent'
+export const REPO = 'https://github.com/BrayansStivens/Tamandua-AppSec'
 export const DOCS = `${REPO}/tree/main/docs`
 
 const en = {
@@ -120,12 +120,12 @@ const en = {
     kicker: 'Install',
     title: 'Five minutes, one server.',
     steps: ['You need Docker, make and git.', 'Start it and open the panel.', 'Or add the Action to your workflow.'],
-    shell: 'git clone https://github.com/BrayansStivens/appsec-agent.git\ncd appsec-agent\nmake up',
-    action: '- uses: BrayansStivens/appsec-agent@v0.10.1',
+    shell: 'git clone https://github.com/BrayansStivens/Tamandua-AppSec.git\ncd Tamandua-AppSec\nmake up',
+    action: '- uses: BrayansStivens/Tamandua-AppSec@v0.10.1',
     copy: 'Copy',
     copied: 'Copied',
     docs: 'Read the docs',
-    note: 'While the repository is private, access requires an invitation.',
+    note: 'Free and open source (AGPL-3.0). It runs on your server: no account, no telemetry.',
   },
   footer: {
     colophon: 'Field notes on Tamandua tetradactyla, the small anteater of Colombia that eats bugs where nobody looks.',
@@ -260,12 +260,12 @@ const es: typeof en = {
     kicker: 'Instalar',
     title: 'Cinco minutos, un servidor.',
     steps: ['Necesitas Docker, make y git.', 'Arráncalo y abre el panel.', 'O añade la Action a tu workflow.'],
-    shell: 'git clone https://github.com/BrayansStivens/appsec-agent.git\ncd appsec-agent\nmake up',
-    action: '- uses: BrayansStivens/appsec-agent@v0.10.1',
+    shell: 'git clone https://github.com/BrayansStivens/Tamandua-AppSec.git\ncd Tamandua-AppSec\nmake up',
+    action: '- uses: BrayansStivens/Tamandua-AppSec@v0.10.1',
     copy: 'Copiar',
     copied: 'Copiado',
     docs: 'Leer la documentación',
-    note: 'Mientras el repositorio sea privado, el acceso es por invitación.',
+    note: 'Libre y de código abierto (AGPL-3.0). Corre en tu servidor: sin cuenta y sin telemetría.',
   },
   footer: {
     colophon: 'Notas de campo sobre Tamandua tetradactyla, el pequeño oso hormiguero de Colombia que se come los bugs donde nadie mira.',
