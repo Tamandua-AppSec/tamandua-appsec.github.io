@@ -25,9 +25,6 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
-        env:
-          SITE_URL: https://brayansstivens.github.io
-          BASE_PATH: /tamandua-landing
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

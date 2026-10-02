@@ -1,6 +1,6 @@
 # Tamandua · landing
 
-The website of [Tamandua](https://github.com/BrayansStivens/Tamandua-AppSec), in English (`/`) and Spanish (`/es/`).
+The website of [Tamandua](https://github.com/Tamandua-AppSec/tamandua), in English (`/`) and Spanish (`/es/`).
 
 A field notebook: bugs are catalogued like specimens, the tamandua's tongue winds out of its snout and down the page as
 you read, eating every bug it reaches, and a violet hanko stamps what has been verified. Flat colour, editorial grid,
@@ -17,8 +17,8 @@ npm run build      # astro check + static build in dist/
 ## Publishing
 
 Every push to `main` builds and publishes to GitHub Pages (`.github/workflows/deploy.yml`), at
-<https://brayansstivens.github.io/tamandua-landing/>. The workflow sets `SITE_URL` and `BASE_PATH`; internal links go
-through `withBase` (`src/paths.ts`) so the site works under that path or at the root of its own domain.
+<https://tamandua-appsec.github.io/>. `SITE_URL` and `BASE_PATH` override where it lives; internal links go through
+`withBase` (`src/paths.ts`) so it also works under a path.
 
 ## How it's put together
 

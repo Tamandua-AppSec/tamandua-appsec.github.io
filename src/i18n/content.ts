@@ -3,7 +3,7 @@
 
 export type Locale = 'en' | 'es'
 
-export const REPO = 'https://github.com/BrayansStivens/Tamandua-AppSec'
+export const REPO = 'https://github.com/Tamandua-AppSec/tamandua'
 export const DOCS = `${REPO}/tree/main/docs`
 
 const en = {
@@ -120,8 +120,8 @@ const en = {
     kicker: 'Install',
     title: 'Five minutes, one server.',
     steps: ['You need Docker, make and git.', 'Start it and open the panel.', 'Or add the Action to your workflow.'],
-    shell: 'git clone https://github.com/BrayansStivens/Tamandua-AppSec.git\ncd Tamandua-AppSec\nmake up',
-    action: '- uses: BrayansStivens/Tamandua-AppSec@v0.10.1',
+    shell: 'git clone https://github.com/Tamandua-AppSec/tamandua.git\ncd tamandua\nmake up',
+    action: '- uses: Tamandua-AppSec/tamandua@v0.10.2',
     copy: 'Copy',
     copied: 'Copied',
     docs: 'Read the docs',
@@ -260,8 +260,8 @@ const es: typeof en = {
     kicker: 'Instalar',
     title: 'Cinco minutos, un servidor.',
     steps: ['Necesitas Docker, make y git.', 'Arráncalo y abre el panel.', 'O añade la Action a tu workflow.'],
-    shell: 'git clone https://github.com/BrayansStivens/Tamandua-AppSec.git\ncd Tamandua-AppSec\nmake up',
-    action: '- uses: BrayansStivens/Tamandua-AppSec@v0.10.1',
+    shell: 'git clone https://github.com/Tamandua-AppSec/tamandua.git\ncd tamandua\nmake up',
+    action: '- uses: Tamandua-AppSec/tamandua@v0.10.2',
     copy: 'Copiar',
     copied: 'Copiado',
     docs: 'Leer la documentación',
