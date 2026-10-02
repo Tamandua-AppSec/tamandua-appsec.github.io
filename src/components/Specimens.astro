@@ -48,7 +48,7 @@ const s = t.specimens
   .drawer { grid-column: 1 / -1; }
   .specimens { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(1rem, 2.5vw, 2.25rem); list-style: none; padding: 0; margin: 0; }
   .specimen {
-    position: relative; padding: 1.25rem 1.25rem 1.5rem; background: color-mix(in oklab, var(--card-deep) 45%, var(--card));
+    position: relative; padding: 1.25rem 1.25rem 1.5rem; background-color: color-mix(in oklab, var(--card-deep) 45%, var(--card));
     border: 1px solid var(--rule); transform: rotate(var(--tilt)); box-shadow: 0 1px 0 var(--rule), 0 18px 30px -24px rgb(30 20 51 / 0.35);
   }
   .specimen:nth-child(even) { margin-top: clamp(2rem, 5vw, 4rem); }
