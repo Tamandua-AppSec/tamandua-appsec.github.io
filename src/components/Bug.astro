@@ -1,13 +1,36 @@
 ---
-// The yellow bug of the logo. Decorative: what it stands for is always said in text next to it.
+// A beetle from the same plate as the tamandua: a pencil underdrawing, a yellow wash a little off the line (as
+// watercolour is), ink outlines, jointed legs, clubbed antennae, pen hatching on its shaded side, a sheen and spots.
+// Plain strokes only (no patterns, ids or filters): it is drawn many times on a page, at sizes from 16 to 64 px.
+// Decorative: what it stands for is always said in text next to it.
 interface Props { class?: string; size?: number }
 const { class: className = '', size = 28 } = Astro.props
+const shell = 'M0 -1.2 C2.6 -1.3 3.2 .8 3 2.3 C2.8 3.8 1.5 4.6 0 4.6 C-1.5 4.6 -2.8 3.8 -3 2.3 C-3.2 .8 -2.6 -1.3 0 -1.2 Z'
 ---
-<svg class={`bug ${className}`} viewBox="-6 -5 12 10" width={size} height={size * 0.84} aria-hidden="true" data-bug>
-  <path d="M-3.6 -1.2 -5 -2.2 M-3.8 1.2 -5.2 2.2 M3.6 -1.2 5 -2.2 M3.8 1.2 5.2 2.2 M0 -2.6 0 -4 M-1.8 -2.2 -2.6 -3.6 M1.8 -2.2 2.6 -3.6"
-        stroke="#1E1433" stroke-width=".9" stroke-linecap="round" fill="none" />
-  <ellipse rx="4" ry="2.9" fill="#FCD34D" stroke="#1E1433" stroke-width=".4" />
-  <path d="M-4 0 H4" stroke="#1E1433" stroke-width=".8" />
-  <circle cx="-1.8" cy="-1.2" r=".6" fill="#1E1433" /><circle cx="1.8" cy="1.2" r=".6" fill="#1E1433" />
+<svg class={`bug ${className}`} viewBox="-6 -5.4 12 10.4" width={size} height={size * 0.87} aria-hidden="true" data-bug>
+  <g fill="none" stroke="#8A8396" stroke-width=".12" stroke-linecap="round" opacity=".5">
+    <ellipse cx=".15" cy="1.1" rx="3.3" ry="3.75" stroke-dasharray=".5 .4" />
+    <path d="M0 -4.9 V5.1" />
+  </g>
+  <g fill="none" stroke="#1E1433" stroke-width=".34" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M1.5 -1.7 2.9 -2.5 4 -3.7 M-1.5 -1.7 -2.9 -2.5 -4 -3.7" />
+    <path d="M2.5 .1 4 .3 5.2 -.6 M-2.5 .1 -4 .3 -5.2 -.6" />
+    <path d="M2.3 2 3.8 3.3 4.5 4.6 M-2.3 2 -3.8 3.3 -4.5 4.6" />
+    <path d="M.45 -3.6 C1 -4.3 1.6 -4.6 2.2 -4.7 M-.45 -3.6 C-1 -4.3 -1.6 -4.6 -2.2 -4.7" />
+  </g>
+  <circle cx="2.35" cy="-4.72" r=".32" fill="#1E1433" /><circle cx="-2.35" cy="-4.72" r=".32" fill="#1E1433" />
+  <path d={shell} fill="#FCD34D" transform="translate(.25 .2)" />
+  <ellipse cy="-1.9" rx="1.9" ry="1.15" fill="#E9B949" transform="translate(.2 .15)" />
+  <path d="M1.2 3.6 L2.2 2.5 M1.6 3.9 L2.6 2.8 M.9 3.1 L2.4 1.5 M1.4 1.6 L2.7 .2 M1.7 .4 L2.6 -.5" stroke="#1E1433" stroke-width=".13" stroke-linecap="round" opacity=".45" />
+  <circle cx="-1.35" cy=".7" r=".42" fill="#1E1433" /><circle cx="1.45" cy=".9" r=".38" fill="#1E1433" />
+  <circle cx="-1.1" cy="2.75" r=".36" fill="#1E1433" /><circle cx="1.05" cy="3.05" r=".32" fill="#1E1433" />
+  <path d="M-2.1 .2 C-2.4 1 -2.3 1.9 -1.9 2.6" fill="none" stroke="#FFF8E6" stroke-width=".28" stroke-linecap="round" opacity=".85" />
+  <g fill="none" stroke="#1E1433" stroke-width=".32" stroke-linejoin="round">
+    <path d={shell} />
+    <path d="M0 -1.15 V4.55" />
+    <ellipse cy="-1.9" rx="1.9" ry="1.15" fill="#FCD34D" fill-opacity="0" />
+  </g>
+  <ellipse cy="-3.15" rx="1.05" ry=".72" fill="#1E1433" />
+  <circle cx="-.42" cy="-3.3" r=".16" fill="#FFF8E6" /><circle cx=".42" cy="-3.3" r=".16" fill="#FFF8E6" />
 </svg>
 <style>.bug { overflow: visible; flex: none; }</style>
