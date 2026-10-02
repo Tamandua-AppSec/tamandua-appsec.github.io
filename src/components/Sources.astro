@@ -1,0 +1,48 @@
+---
+import type { Content } from '../i18n/content'
+import Note from './Note.astro'
+interface Props { t: Content }
+const { t } = Astro.props
+const s = t.sources
+---
+<section id="sources" class="plate sources" aria-labelledby="sources-title" data-held>
+  <div class="wrap grid">
+    <header class="plate-head">
+      <span class="plate-num" aria-hidden="true">{s.number}</span>
+      <div>
+        <p class="kicker">{s.kicker}</p>
+        <h2 id="sources-title" class="display plate-title" data-split>{s.title}</h2>
+      </div>
+    </header>
+    <p class="lead intro" data-reveal>{s.lead}</p>
+    <Note text={t.notes.sources} arrow="down-left" place="right: 6%; bottom: -5.6rem" tilt={-3} />
+  </div>
+  <div class="belt" data-belt>
+    <ul class="tags" role="list" data-belt-track>
+      {s.tools.map((tool, index) => (
+        <li class="tag card-paper" style={`--tilt: ${(index % 2 ? 1 : -1) * (1 + (index % 3) * 0.6)}deg`}>
+          <span class="tag-hole" aria-hidden="true"></span>
+          <span class="mono tag-format">SARIF</span>
+          <span class="display tag-name">{tool}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .intro { grid-column: 6 / span 7; margin: 0; }
+  .belt { margin-top: clamp(3rem, 6vw, 5rem); overflow: hidden; border-block: 1px solid var(--rule); padding-block: 2.5rem; }
+  .tags { display: flex; gap: clamp(1rem, 2vw, 1.75rem); list-style: none; margin: 0; padding: 0 var(--gutter); width: max-content; }
+  .tag {
+    position: relative; display: grid; gap: 0.25rem; min-width: 11rem; padding: 1rem 1.25rem 1.1rem 2.25rem;
+    background-color: var(--card); border: 1px solid var(--card-ink); border-radius: 0.35rem 1.4rem 1.4rem 0.35rem; transform: rotate(var(--tilt));
+  }
+  .tag-hole { position: absolute; left: 0.8rem; top: 50%; width: 0.6rem; height: 0.6rem; margin-top: -0.3rem; border-radius: 50%; border: 1px solid var(--card-ink); }
+  .tag-format { font-size: 0.65rem; letter-spacing: 0.14em; color: var(--violet); }
+  .tag-name { font-size: 1.6rem; line-height: 1.1; white-space: nowrap; }
+  /* Without scroll-linked motion the tags simply wrap. */
+  html.still .tags, html.no-js .tags { flex-wrap: wrap; width: auto; }
+  @media (prefers-reduced-motion: reduce) { .tags { flex-wrap: wrap; width: auto; } }
+  @media (max-width: 64rem) { .intro { grid-column: 1 / -1; } }
+</style>

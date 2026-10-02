@@ -1,0 +1,63 @@
+---
+import type { Content } from '../i18n/content'
+import { REPO } from '../i18n/content'
+import Mascot from './Mascot.astro'
+import Note from './Note.astro'
+interface Props { t: Content }
+const { t } = Astro.props
+const h = t.hero
+---
+<section class="hero wrap" aria-labelledby="hero-title" data-hero>
+  <p class="vertical hero-vertical" aria-hidden="true">{h.vertical}</p>
+  <div class="grid hero-grid">
+    <div class="hero-text">
+      <p class="kicker hero-plate"><span>{h.plate}</span><span class="dot">·</span><i>{h.species}</i></p>
+      <h1 id="hero-title" class="display hero-title" data-split>
+        {h.title.map((line, index) => <span class="line"><span class:list={['line-inner', index === 2 && 'accent']}>{line}</span></span>)}
+      </h1>
+      <Note text={t.notes.hero} arrow="left" place="right: -6%; top: 31%" tilt={-5} />
+      <p class="lead" data-reveal>{h.lead}</p>
+      <div class="actions" data-reveal>
+        <a class="button primary" href="#install">{h.primary} <span aria-hidden="true">→</span></a>
+        <a class="button ghost" href={REPO}>{h.secondary}</a>
+      </div>
+      <ul class="facts mono" data-reveal>{h.facts.map(fact => <li>{fact}</li>)}</ul>
+    </div>
+    <figure class="hero-figure">
+      <div class="frame card-paper">
+        <span class="corner tl" aria-hidden="true"></span><span class="corner tr" aria-hidden="true"></span>
+        <span class="corner bl" aria-hidden="true"></span><span class="corner br" aria-hidden="true"></span>
+        <Mascot label={h.species} />
+      </div>
+      <figcaption class="mono muted"><span>Fig. 1 — <i>{h.species}</i> (Linnaeus, 1758)</span><span>{h.habitat}</span></figcaption>
+    </figure>
+  </div>
+</section>
+
+<style>
+  .hero { position: relative; padding-block: clamp(3rem, 8vw, 7rem) clamp(4rem, 9vw, 8rem); }
+  .hero-vertical { position: absolute; left: calc(var(--gutter) * 0.25); top: clamp(4rem, 10vw, 8rem); }
+  .hero-grid { align-items: center; row-gap: 3rem; }
+  .hero-text { grid-column: 1 / span 7; position: relative; }
+  .hero-figure { grid-column: 8 / span 5; margin: 0; }
+  .hero-plate { display: flex; gap: 0.6rem; margin: 0 0 1.5rem; }
+  .hero-plate i { text-transform: none; letter-spacing: 0.02em; font-family: var(--font-display), serif; font-size: 1.05rem; }
+  .hero-title { font-size: clamp(3.2rem, 1.6rem + 6.6vw, 8.6rem); margin-bottom: 2rem; }
+  .line { display: block; overflow: hidden; padding-block: 0.16em; margin-block: -0.16em; }
+  .line-inner { display: inline-block; }
+  .accent { font-style: italic; color: var(--violet); }
+  .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 2.25rem 0 2rem; }
+  .facts { display: flex; flex-wrap: wrap; gap: 0.5rem 1.5rem; list-style: none; padding: 0; margin: 0; font-size: 0.8rem; color: var(--muted); }
+  .facts li::before { content: '✕ '; color: var(--violet); }
+  .frame { position: relative; aspect-ratio: 1 / 1; padding: 12%; border: 1px solid var(--rule); background: color-mix(in oklab, var(--card-deep) 55%, var(--card)); }
+  .corner { position: absolute; width: 14px; height: 14px; border-color: var(--ink); z-index: 1; border-style: solid; }
+  .tl { top: -1px; left: -1px; border-width: 2px 0 0 2px; } .tr { top: -1px; right: -1px; border-width: 2px 2px 0 0; }
+  .bl { bottom: -1px; left: -1px; border-width: 0 0 2px 2px; } .br { bottom: -1px; right: -1px; border-width: 0 2px 2px 0; }
+  :global(html.pending) .hero .line-inner { transform: translateY(130%); }
+  figcaption { display: flex; flex-direction: column; gap: 0.2rem; margin-top: 0.9rem; font-size: 0.78rem; }
+  @media (max-width: 60rem) {
+    .hero-text, .hero-figure { grid-column: 1 / -1; }
+    .hero-figure { max-width: 26rem; }
+    .hero-vertical { display: none; }
+  }
+</style>

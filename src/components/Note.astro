@@ -1,0 +1,39 @@
+---
+// A naturalist's handwritten note in the margin, with a hand-drawn arrow toward what it comments on. It writes itself
+// when it scrolls in (scripts/motion.ts). Decorative: it repeats, in a lighter voice, what the page already says.
+// `place` positions it on wide screens (CSS, relative to its positioned parent); on narrow ones it sits in the flow.
+interface Props { text: string; arrow?: 'left' | 'right' | 'up-left' | 'up-right' | 'down-left' | 'down-right'; place?: string; tilt?: number }
+const { text, arrow = 'left', place = '', tilt = -4 } = Astro.props
+---
+<p class:list={['note', `arrow-${arrow}`]} style={`${place}; --tilt: ${tilt}deg`} aria-hidden="true" data-note>
+  <svg class="note-arrow" viewBox="0 0 64 44" aria-hidden="true">
+    <path d="M60 6 C46 2 30 6 20 18 C14 25 11 31 9 37" pathLength="1" data-note-ink />
+    <path d="M3 28 L9 38 L17 30" pathLength="1" data-note-ink />
+  </svg>
+  <span class="note-text" data-note-text>{text}</span>
+</p>
+
+<style>
+  .note {
+    position: absolute; z-index: 4; margin: 0; display: flex; align-items: flex-end; gap: 0.25rem; width: max-content; max-width: 15rem;
+    font-family: var(--font-hand), cursive; font-size: clamp(1.25rem, 1.05rem + 0.6vw, 1.7rem); line-height: 1.05; color: var(--violet);
+    transform: rotate(var(--tilt)); pointer-events: none;
+  }
+  .note-arrow { width: 3.4rem; height: auto; flex: none; overflow: visible; }
+  .note-arrow path { fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+  /* The base arrow points down-left; the rest are mirrors and turns of it. */
+  .arrow-left .note-arrow { order: -1; }
+  .arrow-right { flex-direction: row-reverse; }
+  .arrow-right .note-arrow { transform: scaleX(-1); }
+  .arrow-up-left { flex-direction: column; align-items: flex-start; }
+  .arrow-up-left .note-arrow { order: -1; transform: scaleY(-1); }
+  .arrow-up-right { flex-direction: column; align-items: flex-end; }
+  .arrow-up-right .note-arrow { order: -1; transform: scale(-1, -1); }
+  .arrow-down-left { flex-direction: column-reverse; align-items: flex-start; }
+  .arrow-down-right { flex-direction: column-reverse; align-items: flex-end; }
+  .arrow-down-right .note-arrow { transform: scaleX(-1); }
+  @media (max-width: 64rem) {
+    .note { position: static; inset: auto !important; margin: 1rem 0 0 0.5rem; max-width: none; }
+    .note-arrow { width: 2.4rem; }
+  }
+</style>

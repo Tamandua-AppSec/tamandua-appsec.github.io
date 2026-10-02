@@ -1,0 +1,140 @@
+---
+import { Font } from 'astro:assets'
+import '../styles/global.css'
+import type { Content } from '../i18n/content'
+import { REPO } from '../i18n/content'
+import Bug from '../components/Bug.astro'
+import { withBase } from '../paths'
+
+interface Props { t: Content; path?: string }
+const { t, path = '/' } = Astro.props
+const canonical = new URL(withBase(path), Astro.site)
+const english = new URL(withBase(path.replace(/^\/es(\/|$)/, '/')), Astro.site)
+const spanish = new URL(withBase(path.startsWith('/es') ? path : `/es${path === '/' ? '/' : path}`), Astro.site)
+---
+<!doctype html>
+<html lang={t.lang} class="no-js">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{t.meta.title}</title>
+    <meta name="description" content={t.meta.description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="en" href={english} />
+    <link rel="alternate" hreflang="es" href={spanish} />
+    <link rel="alternate" hreflang="x-default" href={english} />
+    <link rel="icon" href={withBase('/favicon.svg')} type="image/svg+xml" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#fff3de" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#1e1433" media="(prefers-color-scheme: dark)" />
+    <meta property="og:title" content={t.meta.title} />
+    <meta property="og:description" content={t.meta.description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <Font cssVariable="--font-display" preload />
+    <Font cssVariable="--font-body" preload />
+    <Font cssVariable="--font-mono" />
+    <Font cssVariable="--font-hand" />
+    <script is:inline>
+      // Before paint: JS is here, and whether this visitor turned motion off (a convenience; it may be unavailable).
+      document.documentElement.classList.replace('no-js', 'js')
+      try {
+        if (localStorage.getItem('tamandua-motion') === 'off') document.documentElement.classList.add('still')
+        if (!document.documentElement.classList.contains('still') && matchMedia('(prefers-reduced-motion: no-preference)').matches) {
+          document.documentElement.classList.add('pending')
+          setTimeout(() => document.documentElement.classList.remove('pending'), 1500)  // the script never came: show everything
+        }
+        const theme = localStorage.getItem('tamandua-theme')
+        if (theme === 'light' || theme === 'dark') document.documentElement.dataset.theme = theme
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#content">{t.skip}</a>
+    <header class="top">
+      <div class="wrap top-row">
+        <a class="brand" href={withBase(t.lang === 'es' ? '/es/' : '/')} aria-label="Tamandua">
+          <img src={withBase('/favicon.svg')} alt="" width="28" height="28" />
+          <span>Tamandua</span>
+        </a>
+        <nav aria-label={t.lang === 'es' ? 'Secciones' : 'Sections'} class="nav">
+          <a href="#specimens">{t.nav.specimens}</a>
+          <a href="#change">{t.nav.change}</a>
+          <a href="#ledger">{t.nav.ledger}</a>
+          <a href="#install">{t.nav.install}</a>
+        </nav>
+        <div class="tools">
+          <p class="counter mono" aria-label={t.counter.aria}>
+            <Bug size={18} /> <span data-counter>0</span> <span class="counter-label" data-counter-label data-one={t.counter.one} data-other={t.counter.label}>{t.counter.label}</span>
+          </p>
+          <button class="theme-toggle" type="button" data-theme-toggle aria-label={t.theme.label} title={t.theme.label}>
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round">
+              <g class="sun"><circle cx="12" cy="12" r="4" /><path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5.3 5.3l1.4 1.4M17.3 17.3l1.4 1.4M5.3 18.7l1.4-1.4M17.3 6.7l1.4-1.4" /></g>
+              <path class="moon" d="M19.5 14.6A7.8 7.8 0 0 1 9.4 4.5 7.8 7.8 0 1 0 19.5 14.6Z" />
+            </svg>
+          </button>
+          <button class="motion-toggle mono" type="button" data-motion-toggle aria-pressed="false"
+                  data-pause={t.motion.pause} data-play={t.motion.play}>
+            <svg class="motion-icon" viewBox="0 0 16 16" width="16" height="16" aria-hidden="true">
+              <g class="pause" fill="currentColor"><rect x="3" y="2.5" width="3.4" height="11" rx="1" /><rect x="9.6" y="2.5" width="3.4" height="11" rx="1" /></g>
+              <path class="play" d="M4 2.5v11l9-5.5Z" fill="currentColor" />
+            </svg>
+            <span class="motion-label" data-motion-label>{t.motion.pause}</span>
+          </button>
+          <a class="lang mono" href={withBase(t.nav.otherHref)} hreflang={t.lang === 'es' ? 'en' : 'es'}>{t.nav.other}</a>
+          <a class="code mono" href={REPO}>{t.nav.code} ↗</a>
+        </div>
+      </div>
+    </header>
+    <slot />
+    <script>
+      import { start } from '../scripts/motion'
+      start()
+    </script>
+  </body>
+</html>
+
+<style>
+  .top {
+    position: sticky; top: 0; z-index: 40;
+    background: color-mix(in oklab, var(--paper) 90%, transparent);
+    backdrop-filter: blur(6px); border-bottom: 1px solid var(--rule);
+  }
+  .top-row { display: flex; align-items: center; gap: 1.5rem; min-height: 4rem; }
+  .brand { display: inline-flex; align-items: center; gap: 0.6rem; font-weight: 600; text-decoration: none; letter-spacing: -0.01em; }
+  .brand img { border-radius: 7px; }
+  .nav { display: flex; gap: 1.5rem; margin-inline: auto; font-size: 0.95rem; }
+  .nav a { text-decoration: none; }
+  .tools { display: flex; align-items: center; gap: 1rem; font-size: 0.8rem; }
+  .tools a, .motion-toggle { text-decoration: none; }
+  .counter { display: inline-flex; align-items: center; gap: 0.35rem; margin: 0; padding: 0.3rem 0.65rem; border: 1px solid var(--rule); border-radius: 999px; }
+  .counter [data-counter] { font-weight: 600; min-width: 1ch; text-align: right; }
+  .motion-toggle {
+    background: none; border: 0; padding: 0.4rem 0; color: var(--muted); cursor: pointer; font-size: 0.8rem;
+    text-decoration: underline; text-underline-offset: 0.2em; min-height: 44px;
+  }
+  .motion-toggle:hover { color: var(--violet); }
+  .motion-toggle { display: inline-flex; align-items: center; gap: 0.4rem; }
+  .motion-icon .play { display: none; }
+  .motion-toggle[aria-pressed="true"] .motion-icon .pause { display: none; }
+  .motion-toggle[aria-pressed="true"] .motion-icon .play { display: block; }
+  .theme-toggle { display: grid; place-items: center; width: 44px; height: 44px; border: 0; background: none; color: var(--ink); cursor: pointer; border-radius: 50%; }
+  .theme-toggle:hover { color: var(--violet); }
+  .theme-toggle .moon { display: none; }
+  @media (prefers-color-scheme: dark) { :global(:root:not([data-theme="light"])) .theme-toggle .moon { display: block; } :global(:root:not([data-theme="light"])) .theme-toggle .sun { display: none; } }
+  :global(:root[data-theme="dark"]) .theme-toggle .moon { display: block; }
+  :global(:root[data-theme="dark"]) .theme-toggle .sun { display: none; }
+  .tools a, .nav a, .counter { white-space: nowrap; }
+  /* Below a full desktop width the counter and the motion toggle keep only their icon, so nothing wraps. */
+  @media (max-width: 84rem) {
+    .counter-label { display: none; }
+    .motion-label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+    .motion-toggle { justify-content: center; min-width: 44px; text-decoration: none; }
+  }
+  @media (max-width: 64rem) { .nav { display: none; } .tools { margin-left: auto; } }
+  @media (max-width: 40rem) {
+    .code { display: none; }
+    .tools { gap: 0.5rem; }
+    .brand span { display: none; }
+  }
+</style>

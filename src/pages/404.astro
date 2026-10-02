@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro'
+import Mascot from '../components/Mascot.astro'
+import { content } from '../i18n/content'
+import { withBase } from '../paths'
+const t = content.en
+const es = content.es
+---
+<Base t={t} path="/404">
+  <main id="content" class="wrap lost">
+    <div class="lost-art"><Mascot label={t.hero.species} /></div>
+    <div>
+      <p class="kicker">404</p>
+      <h1 class="display">{t.notFound.title}</h1>
+      <p class="lead">{t.notFound.body}</p>
+      <p><a class="button primary" href={withBase('/')}>{t.notFound.back}</a></p>
+      <p class="muted" lang="es">{es.notFound.title} <a href={withBase('/es/')}>{es.notFound.back}</a></p>
+    </div>
+  </main>
+</Base>
+<style>
+  .lost { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 3rem; align-items: center; min-height: 75vh; }
+  .lost h1 { font-size: clamp(2.6rem, 2rem + 4vw, 5.5rem); margin: 0.5rem 0 1rem; }
+  .lost-art { max-width: 22rem; animation: sniff 2.4s var(--ease) 2; transform-origin: 70% 80%; }
+  @keyframes sniff { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(-4deg) translateY(4px); } }
+  @media (max-width: 48rem) { .lost { grid-template-columns: 1fr; } }
+</style>

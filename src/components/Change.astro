@@ -1,0 +1,54 @@
+---
+import type { Content } from '../i18n/content'
+import Note from './Note.astro'
+interface Props { t: Content }
+const { t } = Astro.props
+const c = t.change
+const workflow = `- uses: actions/checkout@v4\n  with: { fetch-depth: 0 }\n- uses: BrayansStivens/appsec-agent@v0.10.1`
+---
+<section id="change" class="plate" aria-labelledby="change-title">
+  <div class="wrap grid">
+    <header class="plate-head">
+      <span class="plate-num" aria-hidden="true">{c.number}</span>
+      <div>
+        <p class="kicker">{c.kicker}</p>
+        <h2 id="change-title" class="display plate-title" data-split>{c.title}</h2>
+      </div>
+    </header>
+    <div class="copy">
+      <p class="lead" data-reveal>{c.lead}</p>
+      <div class="workflow" data-reveal>
+        <p class="kicker">{c.action}</p>
+        <pre class="mono"><code>{workflow}</code></pre>
+        <p class="muted small">{c.actionNote}</p>
+      </div>
+    </div>
+    <figure class="terminal" data-terminal data-tongue="stop">
+      <div class="terminal-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+      <pre class="mono terminal-body"><code><span class="prompt">$ </span><span data-type data-command={c.command}>{c.command}</span>
+{c.output.map(line => <span class:list={['out', `tone-${line.tone}`]} data-out>{line.text || ' '}</span>)}</code></pre>
+    </figure>
+    <Note text={t.notes.change} arrow="up-left" place="right: 4%; bottom: -3.4rem" tilt={-3} />
+  </div>
+</section>
+
+<style>
+  .copy { grid-column: 1 / span 5; }
+  .terminal { grid-column: 7 / span 6; margin: 0; align-self: start; background: var(--slab); color: var(--on-slab); border-radius: 0.6rem; overflow: hidden;
+              box-shadow: 0 30px 60px -35px rgb(30 20 51 / 0.6); transform: rotate(0.6deg); }
+  .terminal-bar { display: flex; gap: 0.4rem; padding: 0.8rem 1rem; border-bottom: 1px solid rgb(255 243 222 / 0.12); }
+  .terminal-bar span { width: 0.6rem; height: 0.6rem; border-radius: 50%; border: 1px solid rgb(255 243 222 / 0.45); }
+  .terminal-body { margin: 0; padding: 1.25rem 1.4rem 1.6rem; font-size: clamp(0.72rem, 0.66rem + 0.25vw, 0.86rem); line-height: 1.7; white-space: pre-wrap; }
+  .prompt { color: var(--lilac); }
+  .out { display: block; }
+  .tone-muted { color: rgb(255 243 222 / 0.62); }
+  .tone-ok { color: var(--bug); }
+  .tone-strong { color: var(--lilac); font-weight: 600; }
+  .workflow { margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px dashed var(--rule); }
+  .workflow pre { margin: 0.75rem 0; padding: 1rem 1.1rem; background: color-mix(in oklab, var(--paper-deep) 70%, transparent); border: 1px solid var(--rule);
+                  font-size: 0.82rem; overflow-x: auto; }
+  /* On a phone the step wraps instead of hiding its end behind a scroll. */
+  @media (max-width: 40rem) { .workflow pre { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 0.78rem; } }
+  .small { font-size: 0.88rem; }
+  @media (max-width: 64rem) { .copy, .terminal { grid-column: 1 / -1; } .terminal { margin-top: 2.5rem; } }
+</style>

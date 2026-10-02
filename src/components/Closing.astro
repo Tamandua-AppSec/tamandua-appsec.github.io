@@ -1,0 +1,111 @@
+---
+import type { Content } from '../i18n/content'
+import Bug from './Bug.astro'
+import Note from './Note.astro'
+interface Props { t: Content }
+const { t } = Astro.props
+const y = t.yours
+const i = t.install
+const f = t.footer
+---
+<section id="yours" class="plate" aria-labelledby="yours-title">
+  <div class="wrap grid">
+    <header class="plate-head">
+      <span class="plate-num" aria-hidden="true">{y.number}</span>
+      <div>
+        <p class="kicker">{y.kicker}</p>
+        <h2 id="yours-title" class="display plate-title" data-split>{y.title}</h2>
+      </div>
+    </header>
+    <ul class="traits" role="list">
+      {y.items.map((item, index) => (
+        <li data-reveal><span class="mono trait-no">{['i', 'ii', 'iii', 'iv'][index]}</span><h3 class="display">{item.title}</h3><p>{item.body}</p></li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<section id="install" class="plate install" aria-labelledby="install-title">
+  <div class="wrap grid">
+    <header class="plate-head">
+      <span class="plate-num" aria-hidden="true">{i.number}</span>
+      <div>
+        <p class="kicker">{i.kicker}</p>
+        <h2 id="install-title" class="display plate-title" data-split>{i.title}</h2>
+      </div>
+    </header>
+    <ol class="steps" role="list">
+      <li data-reveal>
+        <p><span class="mono step-no">1</span>{i.steps[0]}</p>
+      </li>
+      <li data-reveal class="step-two">
+        <Note text={t.notes.install} arrow="down-left" place="right: 4%; top: -1.6rem" tilt={-4} />
+        <p><span class="mono step-no">2</span>{i.steps[1]}</p>
+        <div class="snippet"><pre class="mono"><code>{i.shell}</code></pre>
+          <button type="button" class="copy mono" data-copy={i.shell} data-copied={i.copied}>{i.copy}</button></div>
+      </li>
+      <li data-reveal data-tongue="end">
+        <p><span class="mono step-no">3</span>{i.steps[2]}</p>
+        <div class="snippet"><pre class="mono"><code>{i.action}</code></pre>
+          <button type="button" class="copy mono" data-copy={i.action} data-copied={i.copied}>{i.copy}</button></div>
+      </li>
+    </ol>
+    <p class="install-foot" data-reveal><a class="button ghost" href="https://github.com/BrayansStivens/appsec-agent/tree/main/docs">{i.docs} ↗</a>
+      <span class="muted small">{i.note}</span></p>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap grid">
+    <p class="display colophon">{f.colophon}</p>
+    <div class="foot-meta">
+      <p class="mono">{f.made} <Bug size={16} /></p>
+      <p class="mono muted">{f.license}</p>
+      <ul class="links mono" role="list">{f.links.map(([label, href]) => <li><a href={href}>{label} ↗</a></li>)}</ul>
+      <p class="mono muted tiny">{f.credits}</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .traits { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(1.5rem, 3vw, 3rem); list-style: none; margin: 0; padding: 0; }
+  .traits li { border-top: 2px solid var(--ink); padding-top: 1rem; }
+  .traits h3 { font-size: clamp(1.6rem, 1.3rem + 1vw, 2.3rem); margin: 0.4rem 0 0.6rem; }
+  .traits p { margin: 0; color: var(--muted); }
+  .trait-no, .step-no { font-size: 0.8rem; color: var(--violet); }
+  .install { background: var(--slab); color: var(--on-slab); border-top: 0; --rule: rgb(255 243 222 / 0.16); }
+  .install .plate-num { -webkit-text-stroke-color: var(--slab-accent); }
+  .install .kicker, .install .muted { color: rgb(255 243 222 / 0.68); }
+  .steps { grid-column: 1 / span 9; list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 2rem; }
+  .steps p { margin: 0 0 0.75rem; font-size: 1.15rem; display: flex; gap: 1rem; align-items: baseline; }
+  .step-no { color: var(--lilac); min-width: 1.5rem; }
+  .snippet { position: relative; margin-left: 2.5rem; }
+  .snippet pre { margin: 0; padding: 1.1rem 6rem 1.1rem 1.25rem; border: 1px solid rgb(255 243 222 / 0.25); border-radius: 0.4rem; overflow-x: auto; font-size: 0.9rem; line-height: 1.7; }
+  .copy { position: absolute; top: 0.6rem; right: 0.6rem; min-height: 36px; padding: 0.3rem 0.8rem; border-radius: 999px; border: 1px solid var(--lilac);
+          background: transparent; color: var(--lilac); cursor: pointer; font-size: 0.75rem; }
+  .copy:hover { background: var(--lilac); color: var(--ink); }
+  .install a.button.ghost { border-color: var(--on-slab); color: var(--on-slab); }
+  .step-two { position: relative; }
+  .install :global(.note) { color: var(--slab-accent); }
+  .install a.button.ghost:hover { border-color: var(--lilac); color: var(--lilac); }
+  .install :focus-visible { outline-color: var(--lilac); }
+  .install-foot { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; margin: 3rem 0 0; }
+  .small { font-size: 0.88rem; } .tiny { font-size: 0.72rem; }
+  .footer { padding-block: clamp(3rem, 7vw, 6rem); border-top: 1px solid var(--rule); }
+  .colophon { grid-column: 1 / span 7; font-size: clamp(1.6rem, 1.2rem + 1.6vw, 2.8rem); line-height: 1.15; margin: 0; }
+  .foot-meta { grid-column: 9 / span 4; font-size: 0.82rem; }
+  .foot-meta p { margin: 0 0 0.6rem; display: flex; align-items: center; gap: 0.4rem; }
+  .links { display: flex; flex-wrap: wrap; gap: 0.4rem 1.2rem; list-style: none; padding: 0; margin: 1rem 0; }
+  @media (max-width: 64rem) {
+    .traits { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .steps, .colophon, .foot-meta { grid-column: 1 / -1; }
+    .foot-meta { margin-top: 2rem; }
+  }
+  @media (max-width: 36rem) { .traits { grid-template-columns: 1fr; } .snippet { margin-left: 0; } }
+  /* On a phone the command wraps instead of running under the button, and the button sits below it. */
+  @media (max-width: 40rem) {
+    .snippet { display: grid; justify-items: end; gap: 0.5rem; }
+    .snippet pre { justify-self: stretch; padding-right: 1.25rem; white-space: pre-wrap; overflow-wrap: anywhere; }
+    .copy { position: static; }
+  }
+</style>

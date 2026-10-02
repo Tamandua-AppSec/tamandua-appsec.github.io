@@ -1,0 +1,66 @@
+---
+import type { Content } from '../i18n/content'
+import Bug from './Bug.astro'
+import Note from './Note.astro'
+interface Props { t: Content }
+const { t } = Astro.props
+const s = t.specimens
+---
+<section id="specimens" class="plate" aria-labelledby="specimens-title">
+  <div class="wrap grid">
+    <header class="plate-head">
+      <span class="plate-num" aria-hidden="true">{s.number}</span>
+      <div>
+        <p class="kicker">{s.kicker}</p>
+        <h2 id="specimens-title" class="display plate-title" data-split>{s.title}</h2>
+      </div>
+    </header>
+    <div class="intro">
+      <p class="lead" data-reveal>{s.lead}</p>
+      <p class="engines mono muted" data-reveal>{s.engines}</p>
+    </div>
+    <div class="drawer">
+    <ol class="specimens" role="list">
+      {s.items.map((item, index) => (
+        <li class="specimen card-paper" data-specimen style={`--tilt: ${[-1.2, 0.8, -0.6, 1.1][index]}deg`}>
+          <span class="pin" data-tongue="stop" aria-hidden="true"></span>
+          <div class="specimen-top">
+            <span class="mono specimen-no">№ {String(index + 1).padStart(2, '0')}</span>
+            <span class="mono specimen-kind">{item.kind}</span>
+          </div>
+          <div class="specimen-art"><Bug size={64} /></div>
+          <p class="mono specimen-id">{item.id}</p>
+          <h3 class="display specimen-name">{item.name}</h3>
+          <p class="mono specimen-where">{item.where}</p>
+          <p class="specimen-note">{item.note}</p>
+          <span class="stamp specimen-stamp" data-caught aria-hidden="true">{s.captured}</span>
+          {index === 2 && <Note text={t.notes.secret} arrow="down-left" place="top: -4.4rem; right: -1.5rem" tilt={-6} />}
+        </li>
+      ))}
+    </ol>
+    </div>
+  </div>
+</section>
+
+<style>
+  .intro { grid-column: 6 / span 7; margin-bottom: clamp(3rem, 6vw, 5rem); }
+  .engines { font-size: 0.82rem; margin-top: 1.25rem; }
+  .drawer { grid-column: 1 / -1; }
+  .specimens { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(1rem, 2.5vw, 2.25rem); list-style: none; padding: 0; margin: 0; }
+  .specimen {
+    position: relative; padding: 1.25rem 1.25rem 1.5rem; background: color-mix(in oklab, var(--card-deep) 45%, var(--card));
+    border: 1px solid var(--rule); transform: rotate(var(--tilt)); box-shadow: 0 1px 0 var(--rule), 0 18px 30px -24px rgb(30 20 51 / 0.35);
+  }
+  .specimen:nth-child(even) { margin-top: clamp(2rem, 5vw, 4rem); }
+  .pin { position: absolute; top: -7px; left: 50%; width: 12px; height: 12px; margin-left: -6px; border-radius: 50%; background: var(--violet); box-shadow: 0 2px 0 rgb(30 20 51 / 0.3); }
+  .specimen-top { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--muted); }
+  .specimen-art { display: grid; place-items: center start; padding-left: 0.75rem; height: 7.5rem; border-bottom: 1px dashed var(--rule); margin-bottom: 1rem; }
+  .specimen-id { font-size: 0.78rem; color: var(--violet); margin: 0 0 0.25rem; }
+  .specimen-name { font-size: clamp(1.5rem, 1.2rem + 1vw, 2.1rem); margin-bottom: 0.4rem; }
+  .specimen-where { font-size: 0.78rem; color: var(--muted); margin: 0 0 0.75rem; word-break: break-all; }
+  .specimen-note { font-size: 0.95rem; margin: 0; }
+  .specimen-stamp { position: absolute; right: 0.9rem; top: 4.6rem; opacity: 0; font-size: 0.78rem; }
+  :global(.is-caught) .specimen-stamp { opacity: 1; }
+  @media (max-width: 64rem) { .specimens { grid-template-columns: repeat(2, minmax(0, 1fr)); } .intro { grid-column: 1 / -1; } }
+  @media (max-width: 36rem) { .specimens { grid-template-columns: 1fr; } .specimen:nth-child(even) { margin-top: 0; } }
+</style>

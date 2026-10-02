@@ -1,0 +1,87 @@
+---
+import type { Content } from '../i18n/content'
+import Note from './Note.astro'
+interface Props { t: Content }
+const { t } = Astro.props
+const l = t.ledger
+---
+<section id="ledger" class="plate" aria-labelledby="ledger-title">
+  <div class="wrap grid">
+    <header class="plate-head">
+      <span class="plate-num" aria-hidden="true">{l.number}</span>
+      <div>
+        <p class="kicker">{l.kicker}</p>
+        <h2 id="ledger-title" class="display plate-title" data-split>{l.title}</h2>
+      </div>
+    </header>
+    <p class="lead intro" data-reveal>{l.lead}</p>
+    <div class="book card-paper" data-ledger>
+      <table>
+        <thead><tr>{l.columns.map(column => <th scope="col" class="mono">{column}</th>)}</tr></thead>
+        <tbody>
+          {l.rows.map((row, index) => (
+            <tr class:list={[index === 0 && 'fixed-row']} data-row>
+              <td>{row.finding}</td>
+              <td><span class:list={['status', `status-${index}`]}>{row.status}</span></td>
+              <td class="mono" data-label={l.columns[2]}>{row.date}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <Note text={t.notes.ledger} arrow="down-right" place="bottom: calc(100% - 0.3rem); right: 24%" tilt={-4} />
+      <div class="hanko" data-tongue="stop" aria-hidden="true">
+        <span class="stamp hanko-stamp" data-hanko>{l.stamp}</span>
+        <span class="mono hanko-note">{l.stampNote}</span>
+      </div>
+    </div>
+    <ul class="points" role="list">
+      {l.points.map((point, index) => (
+        <li data-reveal><span class="mono point-no">{['i', 'ii', 'iii'][index]}</span><h3 class="display">{point.title}</h3><p>{point.body}</p></li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .intro { grid-column: 6 / span 7; margin: 0 0 clamp(2.5rem, 5vw, 4rem); }
+  /* The rows are the book's ruled lines: they run edge to edge, and the right margin is kept for the stamp. */
+  .book { position: relative; grid-column: 2 / span 10; padding: 1.5rem 0 2.5rem; background-color: var(--card);
+          border: 1px solid var(--rule); box-shadow: 8px 8px 0 color-mix(in oklab, var(--paper-deep) 80%, var(--ink) 10%); }
+  table { width: 100%; border-collapse: collapse; }
+  th { text-align: left; font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); font-weight: 400; padding: 0.4rem 0.5rem 1rem; }
+  td { padding: 1rem 0.5rem; border-top: 1px solid var(--rule); font-size: clamp(0.92rem, 0.88rem + 0.2vw, 1.05rem); vertical-align: middle; }
+  td:last-child { white-space: nowrap; }
+  th:first-child, td:first-child { padding-left: clamp(1rem, 3vw, 2.5rem); }
+  th:last-child, td:last-child { padding-right: clamp(13rem, 20vw, 17rem); }
+  tbody tr:last-child td { border-bottom: 1px solid var(--rule); }
+  .status { display: inline-block; white-space: nowrap; padding: 0.1rem 0.55rem; border: 1px solid currentColor; border-radius: 999px; font-size: 0.85rem; }
+  .status-0 { color: #2f6b45; } .status-1 { color: var(--card-ink); } .status-2 { color: var(--card-muted); }
+  .fixed-row td:first-child { text-decoration: line-through; text-decoration-color: var(--violet); text-decoration-thickness: 2px; }
+  .hanko { position: absolute; right: clamp(1rem, 3vw, 2.5rem); top: 3.6rem; display: grid; justify-items: center; gap: 0.4rem; }
+  .hanko-stamp { font-size: clamp(1.1rem, 0.9rem + 1vw, 1.6rem); padding: 0.6rem 1.1rem; background: color-mix(in oklab, var(--card) 80%, transparent); }
+  .hanko-note { font-size: 0.7rem; color: var(--violet); transform: rotate(-8deg); }
+  .points { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(1.5rem, 4vw, 3.5rem); list-style: none; padding: 0;
+            margin: clamp(3.5rem, 7vw, 6rem) 0 0; }
+  .points h3 { font-size: clamp(1.6rem, 1.3rem + 1vw, 2.2rem); margin: 0.35rem 0 0.5rem; }
+  .points p { margin: 0; color: var(--muted); }
+  .point-no { font-size: 0.8rem; color: var(--violet); }
+  @media (max-width: 64rem) {
+    .intro, .book { grid-column: 1 / -1; } .points { grid-template-columns: 1fr; }
+    th:last-child, td:last-child { padding-right: clamp(1rem, 3vw, 2.5rem); }
+    .hanko { position: static; justify-items: end; margin: 1.5rem clamp(1rem, 3vw, 2.5rem) 0; }
+  }
+  /* On a phone each row is a small entry: the finding, then its status and deadline (the deadline keeps its label). */
+  @media (max-width: 40rem) {
+    thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+    table, tbody { display: block; }
+    tbody tr { display: flex; flex-wrap: wrap; align-items: center; gap: 0.6rem 1rem; padding: 1rem; border-top: 1px solid var(--rule); }
+    .book { padding-top: 0; }
+    tbody tr:first-child { border-top: 0; }
+    tbody tr:last-child { border-bottom: 1px solid var(--rule); }
+    .book tbody td, .book tbody tr:last-child td { padding: 0; border: 0; font-size: 0.95rem; }
+    .book tbody td:first-child { flex-basis: 100%; }
+    /* The deadline sits right of the status, or below it, still on the right, when they don't fit together. */
+    .book tbody td:last-child { margin-left: auto; font-size: 0.85rem; }
+    td[data-label]::before { content: attr(data-label) ' · '; color: var(--muted); font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; }
+  }
+</style>

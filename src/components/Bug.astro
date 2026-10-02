@@ -1,0 +1,13 @@
+---
+// The yellow bug of the logo. Decorative: what it stands for is always said in text next to it.
+interface Props { class?: string; size?: number }
+const { class: className = '', size = 28 } = Astro.props
+---
+<svg class={`bug ${className}`} viewBox="-6 -5 12 10" width={size} height={size * 0.84} aria-hidden="true" data-bug>
+  <path d="M-3.6 -1.2 -5 -2.2 M-3.8 1.2 -5.2 2.2 M3.6 -1.2 5 -2.2 M3.8 1.2 5.2 2.2 M0 -2.6 0 -4 M-1.8 -2.2 -2.6 -3.6 M1.8 -2.2 2.6 -3.6"
+        stroke="#1E1433" stroke-width=".9" stroke-linecap="round" fill="none" />
+  <ellipse rx="4" ry="2.9" fill="#FCD34D" stroke="#1E1433" stroke-width=".4" />
+  <path d="M-4 0 H4" stroke="#1E1433" stroke-width=".8" />
+  <circle cx="-1.8" cy="-1.2" r=".6" fill="#1E1433" /><circle cx="1.8" cy="1.2" r=".6" fill="#1E1433" />
+</svg>
+<style>.bug { overflow: visible; flex: none; }</style>

@@ -1,0 +1,39 @@
+---
+// The tamandua of the logo, without its square: the same shapes, drawn large. Outlines (data-ink, pathLength 1) are
+// sketched first like a naturalist's ink drawing, then the flat colour (data-wash) comes in. The snout's tip carries
+// data-tongue="start": the tongue is drawn from there. The pupil (data-pupil) follows the pointer.
+interface Props { class?: string; label: string }
+const { class: className = '', label } = Astro.props
+const ink: astroHTML.JSX.SVGAttributes & { 'data-ink': string } = {
+  fill: 'none', stroke: '#1E1433', 'stroke-width': 0.5, 'stroke-linecap': 'round', 'stroke-linejoin': 'round', pathLength: 1, 'data-ink': '',
+}
+---
+<svg class={`mascot ${className}`} viewBox="8 15 52 49" role="img" aria-label={label} data-mascot>
+  <g class="mascot-body">
+    <path d="M2 64 C3 48 13 39 25 38 C35 37.5 41 44 43 64 Z" fill="#FFF3DE" data-wash />
+    <path d="M2 64 C3 50 10 42 19 40 C24 44 27 52 27 64 Z" fill="#1E1433" data-wash />
+    <path d="M2 64 C3 48 13 39 25 38 C35 37.5 41 44 43 64" {...ink} />
+    <path d="M19 40 C24 44 27 52 27 64" {...ink} />
+  </g>
+  <g class="mascot-head">
+    <ellipse cx="17.5" cy="21" rx="4.2" ry="5" transform="rotate(-18 17.5 21)" fill="#FFF3DE" data-wash />
+    <ellipse cx="17.8" cy="21.6" rx="2" ry="2.8" transform="rotate(-18 17.8 21.6)" fill="#F2C9A0" data-wash />
+    <ellipse cx="17.5" cy="21" rx="4.2" ry="5" transform="rotate(-18 17.5 21)" {...ink} />
+    <path d="M13 31 C13 23.5 19 19.5 25.5 20 C31 20.4 34.5 23 38 25.5 C44 29.5 50 33.5 54.3 36.4 C55.6 37.3 55.1 39.3 53.5 39.3 C47 39.4 40.5 39.8 35 40.8 C30 41.8 24 43 19 41.5 C15 40.3 13 36 13 31 Z" fill="#FFF3DE" data-wash />
+    <path d="M13 31 C13 23.5 19 19.5 25.5 20 C31 20.4 34.5 23 38 25.5 C44 29.5 50 33.5 54.3 36.4 C55.6 37.3 55.1 39.3 53.5 39.3 C47 39.4 40.5 39.8 35 40.8 C30 41.8 24 43 19 41.5 C15 40.3 13 36 13 31 Z" {...ink} />
+    <circle cx="53.8" cy="37.9" r="1.7" fill="#1E1433" data-wash data-tongue="start" />
+    <g class="mascot-eye" data-eye>
+      <circle cx="27.5" cy="28.5" r="2.4" fill="#1E1433" data-wash />
+      <circle cx="28.3" cy="27.7" r=".8" fill="#fff" data-pupil />
+      <!-- The eyelid: closed by scaling it down from the top of the eye; open, it has no height. -->
+      <ellipse cx="27.5" cy="28.5" rx="2.75" ry="2.75" fill="#FFF3DE" data-lid transform="scale(1 0)" style="transform-origin: 27.5px 25.7px" />
+    </g>
+    <ellipse cx="24" cy="35" rx="2.6" ry="1.6" fill="#F9A8D4" opacity=".7" data-wash />
+  </g>
+</svg>
+
+<style>
+  .mascot { width: 100%; height: auto; overflow: visible; }
+  /* Until the script draws it (or gives up), the sketch starts blank: no flash of the finished drawing. */
+  :global(html.pending) .mascot { visibility: hidden; }
+</style>
