@@ -1,1 +1,1 @@
-Redirige a [Pitangus](https://pitangus-dev.github.io/es/) · [Pitangus-Dev/pitangus](https://github.com/Pitangus-Dev/pitangus).
+Redirige a [Pitangus](https://pitangus.dev/es/) · [Pitangus-Dev/pitangus](https://github.com/Pitangus-Dev/pitangus).
